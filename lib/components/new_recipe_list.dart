@@ -1,7 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:resep_in/pages/focus_recipe.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class ListViewCards extends StatelessWidget {
+class ListViewCards extends StatefulWidget {
+  @override
+  State<ListViewCards> createState() => _ListViewCardsState();
+}
+
+class _ListViewCardsState extends State<ListViewCards> {
+  int recipeCount = 0;
+
+  void initState() {
+    super.initState();
+    fetchRecipeCount();
+  }
+
+  Future<void> fetchRecipeCount() async {
+    final response = await http.get(Uri.parse('https://66d17ef762816af9a4f3d884.mockapi.io/recipes'));
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      setState(() {
+        recipeCount = data.length;
+      });
+    } else {
+      throw Exception('Failed to load recipes');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -15,7 +41,7 @@ class ListViewCards extends StatelessWidget {
             mainAxisSpacing: 8.0,
             childAspectRatio: 0.75,
           ),
-          itemCount: 2,
+          itemCount: recipeCount,
           itemBuilder: (context, index) {
             return Card(
               elevation: 4,
