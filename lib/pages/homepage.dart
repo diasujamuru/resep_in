@@ -169,7 +169,7 @@ class Homepage extends StatelessWidget {
               height: 10,
             ),
             Expanded(
-              child: ListViewCards(),
+              child: NewRecipeList(),
             ),
             SizedBox(
               height: 100,
