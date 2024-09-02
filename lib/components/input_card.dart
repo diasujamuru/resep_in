@@ -2,24 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:resep_in/pages/homepage.dart';
 
-class InputCard extends StatelessWidget {
+class InputCard extends StatefulWidget {
+  @override
+  _InputCardState createState() => _InputCardState();
+}
+
+class _InputCardState extends State<InputCard> {
   final formKey = GlobalKey<FormState>();
 
-  TextEditingController name_recipe = TextEditingController();
-  // TextEditingController type = TextEditingController();
-  TextEditingController rating = TextEditingController();
+  final TextEditingController name_recipe = TextEditingController();
+  final TextEditingController rating = TextEditingController();
+  String? selectedType;
 
   Future _simpan() async {
-    final response = await http.post(Uri.parse("https://66d17ef762816af9a4f3d884.mockapi.io/recipes"), body: {
-      'name_recipe': name_recipe.text,
-      // 'type': type.text,
-      // 'rating': rating.text
-    });
+    final response = await http.post(
+      Uri.parse("https://66d17ef762816af9a4f3d884.mockapi.io/recipes"),
+      body: {
+        'name_recipe': name_recipe.text,
+        'rating': rating.text,
+        'type': selectedType ?? '',
+      },
+    );
 
     if (response.statusCode == 200) {
       return true;
     }
-    return false;
   }
 
   @override
@@ -59,43 +66,52 @@ class InputCard extends StatelessWidget {
                           return "Nama harus diisi";
                         }
                       }),
-                  // SizedBox(
-                  //   height: 15,
-                  // ),
-                  // DropdownButtonFormField<String>(
-                  //     items: [
-                  //       'Makanan',
-                  //       'Minuman'
-                  //     ].map((String value) {
-                  //       return DropdownMenuItem<String>(
-                  //         value: value,
-                  //         child: Text(value),
-                  //       );
-                  //     }).toList(),
-                  //     onChanged: (String? newValue) {},
-                  //     decoration: InputDecoration(
-                  //       labelText: 'Type',
-                  //       border: OutlineInputBorder(),
-                  //     ),
-                  //     validator: (value) {
-                  //       if (value!.isEmpty) {
-                  //         return "Tipe harus diisi";
-                  //       }
-                  //     }),
-                  // SizedBox(
-                  //   height: 15,
-                  // ),
-                  // TextFormField(
-                  //     decoration: InputDecoration(
-                  //       labelText: 'Rating',
-                  //       border: OutlineInputBorder(),
-                  //     ),
-                  //     keyboardType: TextInputType.number,
-                  //     validator: (value) {
-                  //       if (value!.isEmpty) {
-                  //         return "Rating harus diisi";
-                  //       }
-                  //     }),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  TextFormField(
+                    controller: rating,
+                    decoration: InputDecoration(
+                      labelText: 'Rating',
+                      border: OutlineInputBorder(),
+                    ),
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Rating harus diisi";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  DropdownButtonFormField<String>(
+                    items: [
+                      'Makanan',
+                      'Minuman'
+                    ].map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    value: selectedType,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        selectedType = newValue;
+                      });
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Type',
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Tipe harus diisi";
+                      }
+                    },
+                  ),
                   SizedBox(
                     height: 10,
                   ),
