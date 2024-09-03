@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:resep_in/components/new_recipe_list.dart';
+import 'package:resep_in/components/all_recipes.dart';
 
 class Recipes extends StatelessWidget {
   const Recipes({super.key});
