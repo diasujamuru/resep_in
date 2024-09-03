@@ -3,8 +3,6 @@ import 'package:resep_in/pages/focus_recipe.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:resep_in/pages/homepage.dart';
-
 class ListViewCards extends StatefulWidget {
   @override
   State<ListViewCards> createState() => _ListViewCardsState();
