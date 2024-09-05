@@ -53,6 +53,7 @@ class _NewRecipeListState extends State<NewRecipeList> {
                 ),
                 itemCount: recipeCount,
                 itemBuilder: (context, index) {
+                  final lastRecipe = getLastRecipe[index];
                   return Card(
                     elevation: 4,
                     shape: RoundedRectangleBorder(
@@ -73,7 +74,7 @@ class _NewRecipeListState extends State<NewRecipeList> {
                           padding: const EdgeInsets.all(8.0),
                           child: Center(
                             child: Text(
-                              'Nasi Goreng',
+                              lastRecipe['name_recipe'],
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
