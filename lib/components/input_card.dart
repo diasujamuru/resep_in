@@ -80,6 +80,10 @@ class _InputCardState extends State<InputCard> {
                       if (value!.isEmpty) {
                         return "Rating harus diisi";
                       }
+                      int ratingValue = int.parse(value);
+                      if (ratingValue < 1 || ratingValue > 100) {
+                        return "Rating harus antara 1 dan 100";
+                      }
                       return null;
                     },
                   ),
@@ -109,7 +113,7 @@ class _InputCardState extends State<InputCard> {
                     validator: (value) {
                       if (value!.isEmpty) {
                         return "Tipe harus diisi";
-                      }
+                      }  
                     },
                   ),
                   SizedBox(
