@@ -108,120 +108,131 @@ class _ListViewCardsState extends State<ListViewCards> {
             child: CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
           ))
-        : Padding(
-            padding: EdgeInsets.all(8.0),
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 8.0,
-                mainAxisSpacing: 8.0,
-                childAspectRatio: 0.75,
-              ),
-              itemCount: recipeCount,
-              itemBuilder: (context, index) {
-                if (index >= recipes.length) {
-                  return Container(); // Avoid accessing out of bounds
-                }
-                final recipe = recipes[index];
-                return Card(
-                  elevation: 4,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+        : recipes.isEmpty
+            ? Center(
+                child: Text(
+                  "There's no recipes right now!",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Container(
-                          child: Padding(
+                ),
+              )
+            : Padding(
+                padding: EdgeInsets.all(8.0),
+                child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 8.0,
+                    mainAxisSpacing: 8.0,
+                    childAspectRatio: 0.75,
+                  ),
+                  itemCount: recipeCount,
+                  itemBuilder: (context, index) {
+                    if (index >= recipes.length) {
+                      return Container(); // Avoid accessing out of bounds
+                    }
+                    final recipe = recipes[index];
+                    return Card(
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Image(image: AssetImage('images/nasi_goreng.webp')),
+                              ),
+                            ),
+                          ),
+                          Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Image(image: AssetImage('images/nasi_goreng.webp')),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Center(
-                          child: Text(
-                            recipe['name_recipe'] ?? 'No name',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Color.fromARGB(255, 65, 179, 162),
+                            child: Center(
+                              child: Text(
+                                recipe['name_recipe'] ?? 'No name',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(255, 65, 179, 162),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Center(
-                          child: Text(
-                            recipe['type'] ?? 'No Type',
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
-                              color: Color.fromARGB(255, 30, 82, 74),
+                          Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: Center(
+                              child: Text(
+                                recipe['type'] ?? 'No Type',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(255, 30, 82, 74),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                      Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(3.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    PageRouteBuilder(
-                                      pageBuilder: (context, animation, secondaryAnimation) => FocusRecipe(),
-                                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                        const begin = Offset(1.0, 0.0);
-                                        const end = Offset.zero;
-                                        const curve = Curves.ease;
+                          Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(3.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        PageRouteBuilder(
+                                          pageBuilder: (context, animation, secondaryAnimation) => FocusRecipe(),
+                                          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                            const begin = Offset(1.0, 0.0);
+                                            const end = Offset.zero;
+                                            const curve = Curves.ease;
 
-                                        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-                                        var offsetAnimation = animation.drive(tween);
+                                            var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                                            var offsetAnimation = animation.drive(tween);
 
-                                        return SlideTransition(
-                                          position: offsetAnimation,
-                                          child: child,
-                                        );
-                                      },
+                                            return SlideTransition(
+                                              position: offsetAnimation,
+                                              child: child,
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    child: Text(
+                                      'See',
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        color: Color.fromARGB(255, 65, 179, 162),
+                                      ),
                                     ),
-                                  );
-                                },
-                                child: Text(
-                                  'See',
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    color: Color.fromARGB(255, 65, 179, 162),
                                   ),
-                                ),
+                                  SizedBox(
+                                    width: 7.5,
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      showDeleteConfirmationDialog(recipe['id']);
+                                    },
+                                    child: Text(
+                                      'Delete',
+                                      style: TextStyle(fontSize: 10, color: Color.fromARGB(255, 179, 65, 65)),
+                                    ),
+                                  )
+                                ],
                               ),
-                              SizedBox(
-                                width: 7.5,
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  showDeleteConfirmationDialog(recipe['id']);
-                                },
-                                child: Text(
-                                  'Delete',
-                                  style: TextStyle(fontSize: 10, color: Color.fromARGB(255, 179, 65, 65)),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                );
-              },
-            ),
-          );
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              );
   }
 }

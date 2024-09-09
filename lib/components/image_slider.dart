@@ -17,6 +17,7 @@ class ImageSlider extends StatelessWidget {
             images: const [
               AssetImage('images/nasi_goreng.webp'),
               AssetImage('images/food_images_1.jpg'),
+              AssetImage('images/food_images_2.png'),
             ],
             dotSize: 3,
             indicatorBgPadding: 7.0,

@@ -103,37 +103,48 @@ class _MyDrawerState extends State<MyDrawer> {
                 ),
               ),
             ),
-            Container(
-              height: MediaQuery.of(context).size.height - 400,
-              child: ListView.builder(
-                  itemCount: recipeCount,
-                  itemBuilder: (context, index) {
-                    if (index >= recipes.length) {
-                      return Container(); // Avoid accessing out of bounds
-                    }
-                    final recipe = recipes[index];
-                    return ListTile(
-                      leading: Icon(
-                        Icons.bookmark_border_outlined,
+            recipes.isEmpty
+                ? Center(
+                    child: Text(
+                      "There's no recipes right now!",
+                      style: TextStyle(
                         color: Color.fromARGB(255, 65, 179, 162),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
                       ),
-                      title: Text(
-                        recipe['name_recipe'] ?? 'No name',
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 65, 179, 162),
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => FocusRecipe(),
-                          ),
-                        );
-                      },
-                    );
-                  }),
-            )
+                    ),
+                  )
+                : Container(
+                    height: MediaQuery.of(context).size.height - 400,
+                    child: ListView.builder(
+                        itemCount: recipeCount,
+                        itemBuilder: (context, index) {
+                          if (index >= recipes.length) {
+                            return Container(); // Avoid accessing out of bounds
+                          }
+                          final recipe = recipes[index];
+                          return ListTile(
+                            leading: Icon(
+                              Icons.bookmark_border_outlined,
+                              color: Color.fromARGB(255, 65, 179, 162),
+                            ),
+                            title: Text(
+                              recipe['name_recipe'] ?? 'No name',
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 65, 179, 162),
+                              ),
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => FocusRecipe(),
+                                ),
+                              );
+                            },
+                          );
+                        }),
+                  )
           ],
         ),
       ),
