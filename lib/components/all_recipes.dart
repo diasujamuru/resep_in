@@ -51,6 +51,56 @@ class _ListViewCardsState extends State<ListViewCards> {
     }
   }
 
+  Future<void> deletRecipe(String id) async {
+    try {
+      final response = await http.delete(Uri.parse('https://66d17ef762816af9a4f3d884.mockapi.io/recipes/$id'));
+
+      if (response.statusCode == 200) {
+        setState(() {
+          recipes.removeWhere((recipe) => recipe['id'] == id);
+        });
+      } else {
+        throw Exception('Failed to delete recipe');
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
+    }
+  }
+
+  void showDeleteConfirmationDialog(String id) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Delete Confirmation'),
+        content: Text('Are you sure to delete this data ?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(
+              'Cancel',
+              style: TextStyle(
+                color: Color.fromARGB(255, 65, 179, 162),
+                fontSize: 13,
+              ),
+            ),
+          ),
+          TextButton(
+              onPressed: () {
+                deletRecipe(id);
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'Delete',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Color.fromARGB(255, 179, 65, 65),
+                ),
+              ))
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return isLoading
@@ -118,34 +168,52 @@ class _ListViewCardsState extends State<ListViewCards> {
                       Center(
                         child: Padding(
                           padding: const EdgeInsets.all(3.0),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                PageRouteBuilder(
-                                  pageBuilder: (context, animation, secondaryAnimation) => FocusRecipe(),
-                                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                    const begin = Offset(1.0, 0.0);
-                                    const end = Offset.zero;
-                                    const curve = Curves.ease;
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      pageBuilder: (context, animation, secondaryAnimation) => FocusRecipe(),
+                                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                        const begin = Offset(1.0, 0.0);
+                                        const end = Offset.zero;
+                                        const curve = Curves.ease;
 
-                                    var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-                                    var offsetAnimation = animation.drive(tween);
+                                        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                                        var offsetAnimation = animation.drive(tween);
 
-                                    return SlideTransition(
-                                      position: offsetAnimation,
-                                      child: child,
-                                    );
-                                  },
+                                        return SlideTransition(
+                                          position: offsetAnimation,
+                                          child: child,
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  'See',
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    color: Color.fromARGB(255, 65, 179, 162),
+                                  ),
                                 ),
-                              );
-                            },
-                            child: Text(
-                              'See',
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 65, 179, 162),
                               ),
-                            ),
+                              SizedBox(
+                                width: 7.5,
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  showDeleteConfirmationDialog(recipe['id']);
+                                },
+                                child: Text(
+                                  'Delete',
+                                  style: TextStyle(fontSize: 10, color: Color.fromARGB(255, 179, 65, 65)),
+                                ),
+                              )
+                            ],
                           ),
                         ),
                       )

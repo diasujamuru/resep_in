@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:resep_in/pages/homepage.dart';
+import 'package:resep_in/pages/landing_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-      body: Homepage(),
+        body: LandingPage(),
       ),
     );
   }

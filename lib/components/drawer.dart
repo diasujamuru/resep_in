@@ -108,6 +108,9 @@ class _MyDrawerState extends State<MyDrawer> {
               child: ListView.builder(
                   itemCount: recipeCount,
                   itemBuilder: (context, index) {
+                    if (index >= recipes.length) {
+                      return Container(); // Avoid accessing out of bounds
+                    }
                     final recipe = recipes[index];
                     return ListTile(
                       leading: Icon(
